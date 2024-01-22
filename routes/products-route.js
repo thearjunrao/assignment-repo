@@ -158,8 +158,8 @@
  *                              type: string
  *
  *   delete:
- *     summary: Update product by id.
- *     description: Update product by id.
+ *     summary: Delete product by id.
+ *     description: Delete product by id.
  *     parameters:
  *       - in: path
  *         name: id
