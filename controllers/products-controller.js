@@ -1,0 +1,106 @@
+const db = require("../models");
+const Product = db.products;
+const Op = db.Sequelize.Op;
+
+// Create and Save a new Tutorial
+exports.getProducts = async (req, res) => {
+  try {
+    console.log("request received");
+    const data = await Product.findAll();
+    console.log(data);
+    res.status(200).json({
+      products: data,
+      count: data?.length,
+    });
+  } catch (error) {
+    console.log("error", error.message);
+    res.status(400).json({
+      error: error,
+    });
+  }
+};
+
+exports.createProduct = async (req, res) => {
+  try {
+    const reqBody = req.body;
+    console.log(reqBody);
+    const product = {
+      id: reqBody.id,
+      title: reqBody.title,
+      price: Number(reqBody.price),
+      description: reqBody.description,
+      category: reqBody.category,
+      image: reqBody.image,
+    };
+
+    const data = await Product.create(product);
+
+    res.status(200).json({
+      products: data,
+    });
+  } catch (error) {
+    console.log("error", error.message);
+    res.status(400).json({
+      error: error,
+    });
+  }
+};
+
+exports.updateProduct = async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    const product = req.body;
+
+    console.log("product update ====>", product, id);
+
+    if (id && product) {
+      const data = await Product.update(product, {
+        where: { id: id },
+      });
+
+      console.log("updated data ====>", data);
+
+      res.status(200).json({
+        ...product,
+        id: id,
+      });
+    }
+  } catch (error) {
+    console.log("error", error.message);
+    res.status(400).json({
+      error: error,
+    });
+  }
+};
+
+exports.deleteProduct = async (req, res) => {
+  try {
+    const idParam = req.params.id;
+
+    const id = Number(idParam);
+
+    if (id) {
+      const data = await Product.destroy({
+        where: { id: id },
+      });
+
+      console.log(data);
+
+      if (data) {
+        res.status(200).json({
+          success: true,
+        });
+      } else {
+        res.status(200).json({
+          success: false,
+        });
+      }
+    }
+  } catch (error) {
+    console.log("error", error.message);
+    res.status(400).json({
+      error: error,
+    });
+  }
+};
