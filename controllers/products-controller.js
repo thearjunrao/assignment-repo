@@ -1,16 +1,13 @@
 const db = require("../models");
 const Product = db.products;
-const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
 exports.getProducts = async (req, res) => {
   try {
     console.log("request received");
     const data = await Product.findAll();
-    console.log(data);
-    res.status(200).json({
+    return res.status(200).json({
       products: data,
-      count: data?.length,
     });
   } catch (error) {
     console.log("error", error.message);
@@ -23,9 +20,8 @@ exports.getProducts = async (req, res) => {
 exports.createProduct = async (req, res) => {
   try {
     const reqBody = req.body;
-    console.log(reqBody);
+    console.log("request body ====>", reqBody);
     const product = {
-      id: reqBody.id,
       title: reqBody.title,
       price: Number(reqBody.price),
       description: reqBody.description,
@@ -35,9 +31,7 @@ exports.createProduct = async (req, res) => {
 
     const data = await Product.create(product);
 
-    res.status(200).json({
-      products: data,
-    });
+    res.status(200).json(data);
   } catch (error) {
     console.log("error", error.message);
     res.status(400).json({
@@ -76,18 +70,16 @@ exports.updateProduct = async (req, res) => {
 
 exports.deleteProduct = async (req, res) => {
   try {
-    const idParam = req.params.id;
-
-    const id = Number(idParam);
+    const id = Number(req.params.id);
 
     if (id) {
-      const data = await Product.destroy({
+      const dbRes = await Product.destroy({
         where: { id: id },
       });
 
-      console.log(data);
+      console.log("dbRes  =====>", dbRes);
 
-      if (data) {
+      if (dbRes) {
         res.status(200).json({
           success: true,
         });

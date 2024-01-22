@@ -14,10 +14,34 @@
  *                      properties:
  *                          products:
  *                              type: array
- *                          count:
- *                              type: number
+ *                              items:
+ *                                type: object
+ *                                properties:
+ *                                  id:
+ *                                    type: number
+ *                                  title:
+ *                                    type: string
+ *                                  description:
+ *                                    type: string
+ *                                  category:
+ *                                    type: string
+ *                                  price:
+ *                                    type: number
+ *                                  image:
+ *                                    type: string
  *       '500':
  *         description: Internal server error
+ *         content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          error_message:
+ *                              type: string
+ *                          error_code:
+ *                              type: string
+ *
+ *
  *   post:
  *     summary: Create Product.
  *     description: Create Product.
@@ -30,6 +54,7 @@
  *                      properties:
  *                          title:
  *                              type: string
+ *                              required: true
  *                          description:
  *                              type: string
  *                          category:
@@ -61,6 +86,15 @@
  *                              type: string
  *       '500':
  *         description: Internal server error
+ *         content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          error_message:
+ *                              type: string
+ *                          error_code:
+ *                              type: string
  *
  * /products/{id}:
  *   put:
@@ -113,6 +147,16 @@
  *                              type: string
  *       '500':
  *         description: Internal server error
+ *         content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          error_message:
+ *                              type: string
+ *                          error_code:
+ *                              type: string
+ *
  *   delete:
  *     summary: Update product by id.
  *     description: Update product by id.
@@ -135,12 +179,20 @@
  *                              type: boolean
  *       '500':
  *         description: Internal server error
+ *         content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          error_message:
+ *                              type: string
+ *                          error_code:
+ *                              type: string
  */
 
 const {
   getProducts,
   createProduct,
-  getProductById,
   deleteProduct,
   updateProduct,
 } = require("../controllers/products-controller");
